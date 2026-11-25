@@ -1,0 +1,11 @@
+{
+  "main.js": {
+    "file": "assets/st-pi-gh-best-price-integration-CVsMBMWG.js",
+    "name": "st-pi-gh-best-price-integration",
+    "src": "main.js",
+    "isEntry": true,
+    "css": [
+      "assets/st-pi-gh-best-price-integration-BTh7cTEc.css"
+    ]
+  }
+}

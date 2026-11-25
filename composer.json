@@ -1,0 +1,87 @@
+{
+    "name": "stefanpilzltd/gh-bestprice-integration",
+    "description": "Independent BestPrice product feed and shop integration for Shopware 6",
+    "version": "0.9.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stefan Pilz Ltd",
+            "homepage": "https://stefanpilz.ltd"
+        }
+    ],
+    "require": {
+        "php": "~8.4.0",
+        "ext-bcmath": "*",
+        "ext-dom": "*",
+        "ext-mbstring": "*",
+        "ext-xmlwriter": "*",
+        "ext-sodium": "*",
+        "shopware/core": "6.7.16.1",
+        "shopware/administration": "6.7.16.1",
+        "shopware/storefront": "6.7.16.1",
+        "ext-sqlite3": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5",
+        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.90"
+    },
+    "autoload": {
+        "psr-4": {
+            "StPiGhBestPriceIntegration\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "StPiGhBestPriceIntegration\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "StPiGhBestPriceIntegration\\StPiGhBestPriceIntegration",
+        "plugin-icon": "src/Resources/config/plugin.png",
+        "copyright": "(c) Stefan Pilz Ltd",
+        "label": {
+            "de-DE": "StPiGhBestPriceIntegration",
+            "en-GB": "StPiGhBestPriceIntegration",
+            "el-GR": "StPiGhBestPriceIntegration"
+        },
+        "manufacturerLink": {
+            "de-DE": "https://stefanpilz.ltd",
+            "en-GB": "https://stefanpilz.ltd",
+            "el-GR": "https://stefanpilz.ltd"
+        },
+        "supportLink": {
+            "de-DE": "https://stefanpilz.ltd/kontakt",
+            "en-GB": "https://stefanpilz.ltd",
+            "el-GR": "https://stefanpilz.ltd"
+        },
+        "description": {
+            "de-DE": "BestPrice-Produktdaten aus Shopware exportieren, Datenqualität prüfen und tatsächliche Verkaufskanalpreise verwenden. Mit Händler-CSV, Diagnose und geplanter Feed-Erstellung.",
+            "en-GB": "Export selected Shopware product data for BestPrice, validate data quality and use actual sales-channel prices. Includes merchant CSV, diagnostics and scheduled feed generation.",
+            "el-GR": "Εξαγωγή επιλεγμένων προϊόντων Shopware για BestPrice, έλεγχος ποιότητας και πραγματικές τιμές καναλιού, με CSV εμπόρου, διαγνωστικά και προγραμματισμένες ροές."
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {}
+    },
+    "archive": {
+        "exclude": [
+            "/tests",
+            "/docs",
+            "/store",
+            "/marketing",
+            "/dev",
+            "/scripts",
+            "/.github",
+            "/AGENTS.md",
+            "/Makefile",
+            "/phpunit.xml",
+            "/phpstan.neon",
+            "/.php-cs-fixer.dist.php",
+            "/package*.json",
+            "/playwright.config.*"
+        ]
+    }
+}

@@ -1,0 +1,46 @@
+name: stpi-gh-bestprice-dev
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: synthetic-bestprice-local-only
+      MARIADB_DATABASE: bestprice
+    volumes: ["db:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  runtime:
+    image: ghcr.io/shopware/docker-dev:php8.4-node24-caddy
+    ports: ["127.0.0.1:18868:8000"]
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: 0
+      APP_URL: http://localhost:18868
+      DATABASE_URL: mysql://root:synthetic-bestprice-local-only@db:3306/bestprice
+      MAILER_DSN: null://null
+      MESSENGER_TRANSPORT_DSN: doctrine://default
+    volumes: ["./shop:/var/www/html", "../:/var/www/html/custom/plugins/StPiGhBestPriceIntegration"]
+    depends_on:
+      db: {condition: service_healthy}
+  worker:
+    image: ghcr.io/shopware/docker-dev:php8.4-node24-caddy
+    profiles: ["workers"]
+    entrypoint: ["php", "bin/console", "messenger:consume", "async", "--time-limit=3600"]
+    environment:
+      APP_ENV: prod
+      DATABASE_URL: mysql://root:synthetic-bestprice-local-only@db:3306/bestprice
+    volumes: ["./shop:/var/www/html", "../:/var/www/html/custom/plugins/StPiGhBestPriceIntegration"]
+    depends_on: [runtime]
+  scheduler:
+    image: ghcr.io/shopware/docker-dev:php8.4-node24-caddy
+    profiles: ["workers"]
+    entrypoint: ["php", "bin/console", "scheduled-task:run", "--time-limit=3600"]
+    environment:
+      APP_ENV: prod
+      DATABASE_URL: mysql://root:synthetic-bestprice-local-only@db:3306/bestprice
+    volumes: ["./shop:/var/www/html", "../:/var/www/html/custom/plugins/StPiGhBestPriceIntegration"]
+    depends_on: [runtime]
+volumes:
+  db:

@@ -1,0 +1,25 @@
+{
+  "base": "/bundles/stpighbestpriceintegration/administration/",
+  "entryPoints": {
+    "st-pi-gh-best-price-integration": {
+      "css": [
+        "/bundles/stpighbestpriceintegration/administration/assets/st-pi-gh-best-price-integration-BTh7cTEc.css"
+      ],
+      "dynamic": [],
+      "js": [
+        "/bundles/stpighbestpriceintegration/administration/assets/st-pi-gh-best-price-integration-CVsMBMWG.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.1.0",
+    7,
+    1,
+    0
+  ],
+  "viteServer": null
+}

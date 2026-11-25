@@ -1,0 +1,16 @@
+name: Bug report
+description: Report a reproducible defect using synthetic data
+title: "[Bug] "
+body:
+  - type: textarea
+    id: versions
+    attributes: {label: Versions, description: "Plugin, Shopware, PHP and database versions"}
+    validations: {required: true}
+  - type: textarea
+    id: reproduction
+    attributes: {label: Reproduction, description: "Use synthetic data. Never include keys, tokens, private URLs or customer data."}
+    validations: {required: true}
+  - type: textarea
+    id: expected
+    attributes: {label: Expected and actual behavior}
+    validations: {required: true}

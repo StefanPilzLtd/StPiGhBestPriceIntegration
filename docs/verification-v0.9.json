@@ -1,0 +1,33 @@
+{
+  "plugin": "StPiGhBestPriceIntegration",
+  "version": "0.9.0",
+  "releaseTag": "v0.9",
+  "license": "MIT",
+  "target": {"shopware": "6.7.16.1", "php": "8.4.19", "database": "MariaDB 10.11"},
+  "unitTests": {"passed": 56, "assertions": 101},
+  "composerValidation": "passed with existing exact-version warnings",
+  "administrationBuild": "passed; renamed bundle and entrypoint generated",
+  "shopwareCliValidation": "passed: builtin, ESLint, PHP style, PHPStan, Prettier and Stylelint; Twig skipped because no Storefront templates",
+  "archive": {
+    "file": "StPiGhBestPriceIntegration-0.9.0.zip",
+    "sha256": "f5abdb5e4244f7e56838d3cc095f59e9f6e7486e23e1f6f777099d11ecb6077b",
+    "structure": "passed",
+    "integrity": "passed",
+    "pluginIdentityVersionAndLicense": "passed"
+  },
+  "exactArchiveAcceptance": {
+    "freshCoreInstallation": "passed",
+    "pluginInstallAndActivate": "passed",
+    "administrationAssetHttpStatus": 200,
+    "keepDataUninstall": "passed",
+    "reinstall": "passed",
+    "deactivation": "passed",
+    "removeDataUninstall": "passed",
+    "unrelatedSyntheticMarkersAndCoreCountsPreserved": true,
+    "scope": "isolated synthetic shop; plugin installed only from the exact ZIP"
+  },
+  "officialBestPriceAcceptance": false,
+  "officialIapCheckoutAcceptance": false,
+  "fullCoverageAndRegressionMatrix": false,
+  "limitations": "No BestPrice test account was provided. Local checks do not establish official provider or Shopware Store acceptance."
+}

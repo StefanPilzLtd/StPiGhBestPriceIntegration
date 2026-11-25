@@ -1,0 +1,43 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+    'StPiGhBestPriceIntegration\Core\FeedDefinition':
+        tags:
+            - { name: 'shopware.entity.definition', entity: 'stpi_gh_bp_feed' }
+    'StPiGhBestPriceIntegration\Entitlements\ShopwareInAppPurchaseAdapter':
+    'StPiGhBestPriceIntegration\Entitlements\PurchaseAdapter':
+        alias: 'StPiGhBestPriceIntegration\Entitlements\ShopwareInAppPurchaseAdapter'
+    'StPiGhBestPriceIntegration\Entitlements\EntitlementService':
+    'StPiGhBestPriceIntegration\Entitlements\FeatureAccessGuard':
+    'StPiGhBestPriceIntegration\Pricing\PricingService':
+    'StPiGhBestPriceIntegration\Analytics\ProfitabilityService':
+    'StPiGhBestPriceIntegration\Feed\FeedWriter':
+    'StPiGhBestPriceIntegration\Feed\FeedStorage':
+        arguments:
+            $filesystem: '@shopware.filesystem.private'
+    'StPiGhBestPriceIntegration\Configuration\FeedRepository':
+        arguments:
+            $repository: '@stpi_gh_bp_feed.repository'
+    'StPiGhBestPriceIntegration\Catalog\ProductCatalog':
+        arguments:
+            $products: '@sales_channel.product.repository'
+            $factory: '@Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory'
+    'StPiGhBestPriceIntegration\Feed\FeedBuilder':
+    'StPiGhBestPriceIntegration\Controller\AdminController':
+        public: true
+        tags:
+            - { name: 'controller.service_arguments' }
+    'StPiGhBestPriceIntegration\Controller\PublicFeedController':
+        public: true
+        tags:
+            - { name: 'controller.service_arguments' }
+    'StPiGhBestPriceIntegration\Message\BuildFeedHandler':
+    'StPiGhBestPriceIntegration\Command\BuildFeedCommand':
+    'StPiGhBestPriceIntegration\ScheduledTask\RefreshFeedsTask':
+        tags:
+            - { name: 'shopware.scheduled.task' }
+    'StPiGhBestPriceIntegration\ScheduledTask\RefreshFeedsHandler':
+        arguments:
+            $scheduledTaskRepository: '@scheduled_task.repository'

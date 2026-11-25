@@ -1,0 +1,63 @@
+name: Quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.4']
+        shopware: ['6.7.16.1']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: bcmath, dom, xmlwriter, mbstring, sodium, sqlite3, pdo_mysql
+          coverage: pcov
+          tools: composer:v2
+      # Shopware requires the version; exact constraints deliberately limit compatibility.
+      - run: composer --no-plugins validate
+      - run: composer install --no-interaction --no-plugins --no-scripts --prefer-dist
+      - run: composer --no-plugins audit --locked
+      - run: find src tests -name '*.php' -print0 | xargs -0 -n1 php -l
+      - run: vendor/bin/php-cs-fixer check --using-cache=no
+      - run: vendor/bin/phpstan analyse --memory-limit=512M
+      - run: vendor/bin/phpunit --log-junit artifacts/unit.xml --coverage-clover artifacts/coverage.xml
+      - run: python3 scripts/check_coverage.py artifacts/coverage.xml
+      - run: php tests/performance.php > artifacts/performance.json
+      - run: python3 scripts/secret_scan.py
+      - run: python3 scripts/sbom.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-php-${{ matrix.php }}
+          path: artifacts/
+  assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shopware/shopware-cli-action@v1
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - run: shopware-cli extension build .
+      - run: python3 scripts/clean_build_outputs.py
+      - run: shopware-cli extension validate .
+      - run: make package
+      - uses: actions/upload-artifact@v4
+        with: {name: candidate-archive, path: artifacts/*.zip}
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make setup start install
+      - run: make test-integration
+      - run: mkdir -p artifacts && docker compose -f dev/compose.yaml logs --no-color > artifacts/compose.log
+        if: always()
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: integration-logs, path: artifacts/}

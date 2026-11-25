@@ -1,0 +1,25 @@
+name: Official source monitoring
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '18 7 * * 1'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: artifacts/source-baseline.json
+          key: official-sources-${{ github.run_id }}
+          restore-keys: official-sources-
+      - run: python3 scripts/monitor_sources.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/cache/save@v4
+        with:
+          path: artifacts/source-baseline.json
+          key: official-sources-${{ github.run_id }}

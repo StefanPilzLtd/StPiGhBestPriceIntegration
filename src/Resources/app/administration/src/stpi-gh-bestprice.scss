@@ -1,0 +1,40 @@
+.stpi-gh-bestprice {
+    .stpi-gh-bestprice__intro {
+        padding: 26px 8px;
+        span {
+            color: #16758a;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+        }
+        h1 {
+            margin: 8px 0;
+            font-size: 26px;
+        }
+        p {
+            color: #63768b;
+            max-width: 720px;
+            line-height: 1.6;
+        }
+    }
+    .stpi-gh-bestprice__steps {
+        padding-left: 24px;
+        line-height: 2.25;
+        margin-bottom: 24px;
+    }
+    dl {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) 2fr;
+        gap: 12px;
+        dt {
+            font-weight: 600;
+        }
+        dd {
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+    }
+    .sw-card {
+        margin-top: 20px;
+    }
+}

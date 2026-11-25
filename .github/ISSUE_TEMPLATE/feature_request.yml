@@ -1,0 +1,10 @@
+name: Feature request
+description: Describe a merchant workflow
+body:
+  - type: textarea
+    id: need
+    attributes: {label: Merchant problem and desired behavior}
+    validations: {required: true}
+  - type: textarea
+    id: contract
+    attributes: {label: Official interface or rights evidence, description: "Provide public documentation links, never credentials."}

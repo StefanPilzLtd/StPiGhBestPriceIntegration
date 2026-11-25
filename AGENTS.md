@@ -1,0 +1,3 @@
+# StPiGhBestPriceIntegration
+
+Public community source under MIT. Keep the README concise and preserve the documented lack of official BestPrice acceptance. Use strict PHP types, dependency injection and native Shopware APIs. Do not invent external APIs, tests, merchant approvals or data rights. Tracking and market intelligence stay disabled until implemented and properly authorized. Do not bypass production entitlement checks. Use isolated synthetic installations; never modify existing merchant databases or sibling projects. Do not commit credentials, customer data, private account records or mail archives. Run checks appropriate to changes. Issues, feedback and pull requests are welcome.

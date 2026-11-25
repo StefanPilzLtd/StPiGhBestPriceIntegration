@@ -1,0 +1,16 @@
+/vendor/
+/node_modules/
+/.env*
+/var/
+/artifacts/
+/.phpunit.cache/
+/.phpunit.result.cache
+/.php-cs-fixer.cache
+/auth.json
+/.idea/
+*.log
+*.zip
+
+/dev/shop/
+node_modules/
+__pycache__/

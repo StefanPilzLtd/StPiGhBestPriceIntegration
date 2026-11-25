@@ -1,0 +1,3 @@
+stpi_gh_bestprice_controllers:
+    resource: '../../Controller/*Controller.php'
+    type: attribute

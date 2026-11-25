@@ -1,0 +1,38 @@
+compatibility_date: '2026-11-24'
+build:
+  shopwareVersionConstraint: '6.7.16.1'
+  zip:
+    composer:
+      enabled: false
+    assets:
+      # CI and make build compile first; package includes those verified assets.
+      enabled: false
+    pack:
+      excludes:
+        paths:
+          - tests
+          - docs
+          - store
+          - marketing
+          - scripts
+          - dev
+          - artifacts
+          - var
+          - .config
+          - .editorconfig
+          - .gitattributes
+          - .gitignore
+          - vendor
+          - node_modules
+          - .github
+          - AGENTS.md
+          - Makefile
+          - phpunit.xml
+          - phpstan.neon
+          - .php-cs-fixer.dist.php
+          - .php-cs-fixer.cache
+          - .phpunit.cache
+          - .phpunit.result.cache
+validation:
+  store_compliance: true
+  php_version: '8.4'

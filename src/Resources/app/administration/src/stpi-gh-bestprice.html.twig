@@ -1,0 +1,63 @@
+<sw-page class="stpi-gh-bestprice">
+    <template #smart-bar-header><h2>{{ $tc('stpiGhBestprice.title') }}</h2></template>
+    <template #smart-bar-actions>
+        <sw-button :disabled="busy || loading" @click="load">{{ $tc('stpiGhBestprice.refresh') }}</sw-button>
+        <sw-button v-if="acl.can('stpi_gh_bestprice.editor')" variant="primary" :disabled="busy" @click="newFeed">{{ $tc('stpiGhBestprice.new') }}</sw-button>
+    </template>
+    <template #content><sw-card-view>
+        <div class="stpi-gh-bestprice__intro"><span>STEFAN PILZ LTD</span><h1>{{ $tc('stpiGhBestprice.subtitle') }}</h1><p>{{ $tc('stpiGhBestprice.intro') }}</p></div>
+        <mt-tabs position-identifier="stpi-gh-bestprice" :default-item="tab" :items="tabs" @new-item-active="tab = $event; result = null"/>
+        <sw-loader v-if="loading"/>
+        <template v-else>
+            <sw-card v-if="tab === 'overview'" :title="$tc('stpiGhBestprice.setup')">
+                <ol class="stpi-gh-bestprice__steps"><li>{{ $tc('stpiGhBestprice.step.account') }}</li><li>{{ $tc('stpiGhBestprice.step.select') }}</li><li>{{ $tc('stpiGhBestprice.step.shipping') }}</li><li>{{ $tc('stpiGhBestprice.step.validate') }}</li><li>{{ $tc('stpiGhBestprice.step.submit') }}</li></ol>
+                <sw-alert variant="info">{{ $tc('stpiGhBestprice.independent') }}</sw-alert>
+                <p>{{ $tc('stpiGhBestprice.feedCount') }}: {{ total }}</p>
+            </sw-card>
+            <template v-if="tab === 'feeds'">
+                <sw-card :title="$tc('stpiGhBestprice.tab.feeds')">
+                    <sw-data-grid v-if="feeds.length" :data-source="feeds" :columns="columns" :show-selection="false">
+                        <template #column-enabled="{item}">{{ $tc(item.enabled ? 'stpiGhBestprice.active' : 'stpiGhBestprice.disabled') }}</template>
+                        <template #actions="{item}">
+                            <sw-context-menu-item v-if="acl.can('stpi_gh_bestprice.editor')" @click="edit(item)">{{ $tc('stpiGhBestprice.edit') }}</sw-context-menu-item>
+                            <sw-context-menu-item v-if="acl.can('stpi_gh_bestprice.generator')" :disabled="busy" @click="build(item)">{{ $tc('stpiGhBestprice.build') }}</sw-context-menu-item>
+                            <sw-context-menu-item @click="quality(item)">{{ $tc('stpiGhBestprice.tab.quality') }}</sw-context-menu-item>
+                        </template>
+                    </sw-data-grid><p v-else>{{ $tc('stpiGhBestprice.empty') }}</p>
+                    <sw-pagination :total="total" :page="page" :limit="25" @page-change="paginate"/>
+                </sw-card>
+                <sw-card v-if="acl.can('stpi_gh_bestprice.editor')" :title="$tc(selectedId ? 'stpiGhBestprice.edit' : 'stpiGhBestprice.new')">
+                    <sw-text-field v-model:value="feed.name" :label="$tc('stpiGhBestprice.field.name')" required/>
+                    <sw-single-select v-model:value="feed.salesChannelId" :options="channelOptions" :label="$tc('stpiGhBestprice.field.salesChannelId')" @update:value="feed.domainId=null"/>
+                    <sw-single-select v-model:value="feed.domainId" :options="domainOptions" :label="$tc('stpiGhBestprice.field.domainId')"/>
+                    <sw-single-select v-model:value="feed.countryId" :options="countryOptions" :label="$tc('stpiGhBestprice.field.countryId')"/>
+                    <sw-text-field v-model:value="feed.merchantId" :label="$tc('stpiGhBestprice.field.merchantId')"/>
+                    <sw-entity-single-select v-model:value="feed.productStreamId" entity="product_stream" :label="$tc('stpiGhBestprice.field.productStreamId')"/>
+                    <sw-entity-multi-id-select v-for="selection in selectionFields" :key="selection.key" v-model:ids="feed[selection.key]" :entity="selection.entity" :label="$tc('stpiGhBestprice.field.'+selection.key)"/>
+                    <sw-number-field v-model:value="feed.intervalMinutes" number-type="int" :min="15" :max="10080" :label="$tc('stpiGhBestprice.field.intervalMinutes')"/>
+                    <sw-switch-field v-model:value="feed.shippingFallbackConfirmed" :label="$tc('stpiGhBestprice.field.shippingFallbackConfirmed')"/>
+                    <sw-switch-field v-model:value="feed.enabled" :label="$tc('stpiGhBestprice.field.enabled')"/>
+                    <sw-alert variant="warning">{{ $tc('stpiGhBestprice.currencyNote') }}</sw-alert>
+                    <sw-button variant="primary" :disabled="!canSave" :is-loading="busy" @click="save">{{ $tc('stpiGhBestprice.save') }}</sw-button>
+                    <template v-if="publicUrl"><sw-text-field :model-value="publicUrl" :label="$tc('stpiGhBestprice.field.publicUrl')" readonly/><p>{{ $tc('stpiGhBestprice.csvNote') }}</p></template>
+                    <div v-if="feed.published"><p>{{ $tc('stpiGhBestprice.published') }}: {{ feed.published.generatedAt }} · {{ feed.published.products }} · {{ feed.published.qualityScore }}%</p></div>
+                    <sw-alert v-if="feed.lastBuild?.errorCode" variant="error">{{ $tc('stpiGhBestprice.buildFailed') }}</sw-alert>
+                </sw-card>
+            </template>
+            <sw-card v-if="tab === 'mapping'" :title="$tc('stpiGhBestprice.tab.mapping')">
+                <p>{{ $tc('stpiGhBestprice.mappingHelp') }}</p><p v-if="!selectedId">{{ $tc('stpiGhBestprice.selectFirst') }}</p>
+                <template v-else><sw-text-field v-for="field in mappingFields" :key="field" v-model:value="feed.mapping[field]" :label="$tc('stpiGhBestprice.mappingField.'+field)"/><sw-button :disabled="!canSave" @click="save">{{ $tc('stpiGhBestprice.save') }}</sw-button></template>
+            </sw-card>
+            <sw-card v-if="tab === 'quality'" :title="$tc('stpiGhBestprice.tab.quality')">
+                <p>{{ $tc('stpiGhBestprice.qualityHelp') }}</p><p v-if="!selectedId">{{ $tc('stpiGhBestprice.selectFirst') }}</p>
+                <sw-data-grid v-if="errors.length" :data-source="errors" :columns="errorColumns" :show-selection="false" :show-actions="false"><template #column-productId="{item}"><router-link :to="{name:'sw.product.detail',params:{id:item.productId}}">{{ item.productId }}</router-link></template><template #column-code="{item}">{{ $tc('stpiGhBestprice.validation.'+item.code) }}</template></sw-data-grid>
+                <p v-else-if="selectedId">{{ $tc('stpiGhBestprice.noErrors') }}</p><sw-pagination :total="errorTotal" :page="errorPage" :limit="50" @page-change="errorPaginate"/>
+            </sw-card>
+            <sw-card v-if="tab === 'pricing'" :title="$tc('stpiGhBestprice.tab.pricing')"><p>{{ $tc('stpiGhBestprice.pricingHelp') }}</p><sw-text-field v-for="(_,key) in pricing" :key="key" v-model:value="pricing[key]" :label="$tc('stpiGhBestprice.field.'+key)"/><sw-button :disabled="busy || !acl.can('stpi_gh_bestprice.pricing')" @click="preview('pricing')">{{ $tc('stpiGhBestprice.calculate') }}</sw-button></sw-card>
+            <sw-card v-if="tab === 'analytics'" :title="$tc('stpiGhBestprice.tab.analytics')"><p>{{ $tc('stpiGhBestprice.profitHelp') }}</p><sw-text-field v-for="(_,key) in profit" :key="key" v-model:value="profit[key]" :label="$tc('stpiGhBestprice.field.'+key)"/><sw-button :disabled="busy || !acl.can('stpi_gh_bestprice.analytics')" @click="preview('analytics')">{{ $tc('stpiGhBestprice.calculate') }}</sw-button></sw-card>
+            <sw-card v-if="result" :title="$tc('stpiGhBestprice.result')"><dl><template v-for="(value,key) in result" :key="key"><dt>{{ $tc('stpiGhBestprice.resultField.'+key) }}</dt><dd>{{ formatResult(key, value) }}</dd></template></dl></sw-card>
+            <sw-card v-if="tab === 'plans'" :title="$tc('stpiGhBestprice.tab.plans')"><p>{{ $tc('stpiGhBestprice.plansHelp') }}</p><template v-if="plans"><h3>{{ $tc('stpiGhBestprice.tier.'+plans.tier) }}</h3><p v-if="!plans.catalogRegistered">{{ $tc('stpiGhBestprice.registrationPending') }}</p><dl><template v-for="(active,key) in plans.features" :key="key"><dt>{{ $tc('stpiGhBestprice.feature.'+key) }}</dt><dd>{{ $tc(active ? 'stpiGhBestprice.active':'stpiGhBestprice.disabled') }}</dd></template></dl><sw-button v-for="identifier in plans.purchasable" :key="identifier" :disabled="!acl.can('stpi_gh_bestprice.purchaser')" @click="buy(identifier)">{{ $tc('stpiGhBestprice.tier.'+identifier) }}</sw-button></template></sw-card>
+            <sw-card v-if="tab === 'help'" :title="$tc('stpiGhBestprice.tab.help')"><p>{{ $tc('stpiGhBestprice.supportHelp') }}</p><a href="https://merchants.bestprice.gr/xml-specs/" target="_blank" rel="noopener noreferrer">{{ $tc('stpiGhBestprice.feedDocs') }}</a><br><a href="https://github.com/TheBestCo/bestprice-360" target="_blank" rel="noopener noreferrer">{{ $tc('stpiGhBestprice.trackingDocs') }}</a><br><a href="https://stefanpilz.ltd" target="_blank" rel="noopener noreferrer">{{ $tc('stpiGhBestprice.support') }}</a></sw-card>
+        </template>
+    </sw-card-view></template>
+</sw-page>

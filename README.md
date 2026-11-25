@@ -1,68 +1,64 @@
-# StPiGhBestPriceIntegration – BestPrice.gr-Integration für Shopware 6
+# StPiGhBestPriceIntegration – BestPrice.gr Integration for Shopware 6
 
-**Open-Source-Shopware-6-Plugin für BestPrice.gr: XML-Produktfeed, CSV-Export, Produkt-Mapping und lokale Feed-Validierung.**
+**Open-source Shopware 6 plugin for BestPrice.gr: XML product feeds, CSV export, product mapping and local feed validation.**
 
-StPiGhBestPriceIntegration exportiert ausgewählte Produkte aus einem Shopware-Verkaufskanal als Produktdatenfeed. Damit können Shopware-Händler, Agenturen und Entwickler eine Anbindung an den griechischen Preisvergleich BestPrice.gr vorbereiten, testen und an ihre Anforderungen anpassen. Bestellungen und Zahlungen bleiben im Shopware-Shop; das Plugin importiert keine BestPrice-Bestellungen.
+StPiGhBestPriceIntegration exports selected products from a Shopware sales channel as a product data feed. It helps Shopware merchants, agencies and developers prepare, test and customize an integration with the Greek price comparison platform BestPrice.gr. Orders and payments remain in your Shopware store; the plugin does not import orders from BestPrice.
 
-**Version:** v0.9 · **Lizenz:** [MIT](LICENSE) · **Download:** [Release mit installierbarem Plugin-ZIP](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/releases/tag/v0.9)
+**Version:** v0.9 · **License:** [MIT](LICENSE) · **Download:** [Release with installable plugin ZIP](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/releases/tag/v0.9)
 
-## Funktionen des Shopware-BestPrice-Plugins
+## Shopware BestPrice integration features
 
-| Funktion | Was bereits implementiert ist |
+| Feature | Current implementation |
 | --- | --- |
-| **XML-Produktfeed und CSV-Export** | Produktdaten als XML und Händler-CSV bereitstellen; der Basis-Feed hat keine künstliche Produktzahlbegrenzung. Die offizielle BestPrice-Annahme ist noch nicht geprüft. |
-| **Gezielte Produktauswahl** | Einzelne Produkte, dynamische Produktgruppen, Kategorien, Hersteller und Tags auswählen sowie Produkte ausschließen. |
-| **Verkaufskanal und Produktpreise** | Domain, Sprache und Lieferland berücksichtigen; tatsächliche EUR-Bruttopreise aus dem gewählten Shopware-Verkaufskanal verwenden. |
-| **Produkt-Mapping** | Produkttexte, Hersteller, EAN/GTIN und MPN zuordnen; Custom Fields und Eigenschaftsgruppen als Datenquellen verwenden. |
-| **Variantenexport** | Blattvarianten mit vererbten Produktdaten exportieren. Die BestPrice-Modegruppierung nach Farbe und Größe ist noch offen. |
-| **Lokale Feed-Validierung** | Pflichtfelder, URLs, Preise, Encoding, GTIN-Prüfziffern und doppelte Kennungen prüfen; Diagnosemeldungen pro Produkt anzeigen. |
-| **Automatische Feed-Erstellung** | Feeds über Queue und Scheduled Tasks aktualisieren oder einen Build manuell anstoßen. Bei einem fehlgeschlagenen Build bleibt der letzte gültige Feed erhalten. |
-| **Native Shopware-Administration** | Feeds, Mapping und Diagnose direkt in der Administration verwalten; Oberflächentexte auf Deutsch, Englisch und Griechisch. |
+| **XML product feeds and CSV export** | Export product data as XML and merchant CSV, with no artificial product-count limit in the basic feed. Official BestPrice acceptance remains unverified. |
+| **Product selection** | Select individual products, dynamic product groups, categories, manufacturers and tags, and exclude products. |
+| **Sales channels and product prices** | Use the selected domain, language and delivery country, with actual EUR gross prices from the Shopware sales channel. |
+| **Product mapping** | Map product text, manufacturer, EAN/GTIN and MPN fields; use custom fields and property groups as data sources. |
+| **Variant export** | Export individual leaf variants with inherited product data. BestPrice fashion grouping by color and size is still outstanding. |
+| **Local feed validation** | Check required fields, URLs, prices, encoding, GTIN check digits and duplicate identifiers; display diagnostics for individual products. |
+| **Scheduled feed generation** | Update feeds through the queue and scheduled tasks, or request a build manually. A failed build preserves the last valid feed. |
+| **Native Shopware Administration** | Manage feeds, mappings and diagnostics in the Administration, with interface text in German, English and Greek. |
 
-Versandkosten lassen sich produktbezogen überschreiben. Andernfalls setzt der Export eine bestätigte allgemeine Versandregel im BestPrice-Händlerkonto voraus; eine vollständige Nachbildung beliebiger Shopware-Versandregeln ist nicht enthalten.
+Shipping costs can be overridden per product. Otherwise, the export relies on a confirmed general shipping rule in the BestPrice merchant account. It does not reproduce every possible Shopware shipping rule.
 
-### Weitere Funktionen und aktueller Entwicklungsstand
+### Additional features and development status
 
-Preisvorschau, Profitabilitätsrechner und zusätzliche Feed-Konfigurationen sind im Code vorhanden. Diese Funktionen unterliegen den bestehenden Shopware-IAP-Prüfungen; für dieses GitHub-Release ist kein IAP-Angebot freigeschaltet.
+Price previews, a profitability calculator and additional feed configurations are implemented in the code. These features are subject to the existing Shopware In-App Purchase (IAP) checks; no IAP offers are active for this GitHub release.
 
-BestPrice 360, Consent- und Conversion-Verarbeitung, historische Analytics und automatisches Repricing stehen in v0.9 noch nicht bereit. Tracking und Market Intelligence sind deaktiviert. Den vollständigen Stand findest du unter [Funktionen und Einschränkungen](docs/status.md).
+BestPrice 360, consent and conversion processing, historical analytics and automated repricing are not available in v0.9. Tracking and market intelligence are disabled. See [implementation status and limitations](docs/status.md) for details.
 
-## Warum der Code öffentlich auf GitHub steht
+## Why this plugin is public on GitHub
 
-Ich konnte das Plugin nicht vollständig testen, weil BestPrice mir keinen Testaccount zur Verfügung gestellt hat. Ursprünglich wollte ich es im Shopware Store veröffentlichen. Da mir der notwendige Zugang für die vollständigen Tests fehlt, stelle ich den Code stattdessen öffentlich auf GitHub bereit.
+I could not fully test the plugin because BestPrice did not provide me with a test account. I originally planned to publish it in the Shopware Store. Without the access needed to complete those tests, I am making the code publicly available on GitHub instead.
 
-Lokale Prüfungen sind vorhanden: 56 Unit-Tests sowie Installation, Aktivierung, Neuinstallation und Deinstallation des Release-ZIPs wurden in einem isolierten Testshop geprüft. Eine offizielle BestPrice-Feed-Abnahme oder Shopware-Store-Freigabe liegt damit nicht vor. Details stehen im [Prüfnachweis für v0.9](docs/verification-v0.9.json).
+Local checks include 56 passing unit tests, plus installation, activation, reinstallation and uninstallation of the release ZIP in an isolated test shop. These checks do not establish official BestPrice feed acceptance or Shopware Store approval. See the [v0.9 verification record](docs/verification-v0.9.json).
 
-## Voraussetzungen
+## Requirements
 
-Der aktuelle Release ist auf **Shopware 6.7.16.1**, **PHP 8.4** und **MariaDB 10.11** ausgerichtet. Die Composer-Abhängigkeiten beschränken die Installation auf diese Shopware-Version. Weitere Versionen müssen gesondert angepasst und getestet werden.
+The current release targets **Shopware 6.7.16.1**, **PHP 8.4** and **MariaDB 10.11**. Composer dependencies restrict installation to this Shopware version. Other versions require separate adaptation and testing.
 
-Für die automatische Feed-Erstellung müssen die Shopware-Queue und der Scheduled-Task-Runner laufen. Für die tatsächliche Anbindung an BestPrice brauchst du außerdem einen berechtigten Händlerzugang und die Prüfung deiner Produktdaten durch BestPrice.
+The Shopware queue worker and scheduled-task runner must be running for automatic feed generation. Connecting to BestPrice also requires authorized merchant access and validation of your product data by BestPrice.
 
-## Installation und erste Schritte
+## Installation and getting started
 
-1. Lade das [installierbare Plugin-ZIP von Release v0.9](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/releases/download/v0.9/StPiGhBestPriceIntegration-0.9.0.zip) herunter.
-2. Lade das ZIP in einem passenden Testshop unter **Erweiterungen → Meine Erweiterungen** hoch, installiere und aktiviere das Plugin.
-3. Öffne **Marketing → BestPrice Integration** und wähle Verkaufskanal, Domain, Lieferland und die zu exportierenden Produkte.
-4. Prüfe Mapping und Versandregel, aktiviere die Konfiguration und stoße die Feed-Erstellung an.
-5. Kontrolliere die Diagnose und den erzeugten XML-/CSV-Feed, bevor du ihn mit einem berechtigten Händlerkonto bei BestPrice prüfen lässt.
+1. Download the [installable plugin ZIP from release v0.9](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/releases/download/v0.9/StPiGhBestPriceIntegration-0.9.0.zip).
+2. In a compatible test shop, upload the ZIP under **Extensions → My extensions**, then install and activate the plugin.
+3. Open **Marketing → BestPrice Integration** and select the sales channel, domain, delivery country and products to export.
+4. Review the mapping and shipping rule, enable the configuration and request a feed build.
+5. Review the diagnostics and generated XML/CSV feed before submitting it to BestPrice for validation through an authorized merchant account.
 
-Feed-URLs enthalten einen Zugriffsschlüssel und sollten vertraulich behandelt werden.
+Feed URLs contain an access key and should be treated as confidential.
 
-[Händlerhandbuch auf Deutsch](docs/merchant/de-DE.md) · [English merchant guide](docs/merchant/en-GB.md) · [Εγχειρίδιο εμπόρου](docs/merchant/el-GR.md) · [Entwicklung und Tests](docs/development.md)
+[English merchant guide](docs/merchant/en-GB.md) · [German merchant guide](docs/merchant/de-DE.md) · [Greek merchant guide](docs/merchant/el-GR.md) · [Development and testing](docs/development.md)
 
-## Mitmachen: Code nutzen, testen und weiterentwickeln
+## Contributing: use, test and improve the code
 
-Du kannst den Code unter der [MIT-Lizenz](LICENSE) nutzen, anpassen, testen und verwenden. [Issues](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/issues), [Pull Requests](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/pulls) und Feedback sind herzlich willkommen. Besonders hilfreich sind Erfahrungen mit echten BestPrice-Händlerkonten, nachvollziehbare Fehlerberichte und Verbesserungen am Produktfeed.
+You are welcome to use, modify, test and run the code under the [MIT license](LICENSE). [Issues](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/issues), [pull requests](https://github.com/StefanPilzLtd/StPiGhBestPriceIntegration/pulls) and feedback are welcome. Experience with real BestPrice merchant accounts, reproducible bug reports and product-feed improvements are particularly helpful.
 
-Bitte teile keine Zugangsdaten, Feed-Schlüssel oder Kundendaten in öffentlichen Issues. Hinweise für Beiträge stehen in [CONTRIBUTING.md](CONTRIBUTING.md).
+Please keep credentials, feed keys and customer data out of public issues. See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
-## Shopware-Freelancer: Entwicklung, Schnittstellen und Support
+## Freelance Shopware development, integrations and support
 
-Ich bin **Stefan Pilz, Shopware-Freelancer**. Bei Fragen zum Plugin oder wenn du Unterstützung rund um Shopware brauchst, kannst du mich gerne kontaktieren. Ich helfe bei Plugin-Entwicklung, Schnittstellen, individuellen Anpassungen und technischer Betreuung deines Shopware-Shops.
+I am **Stefan Pilz, a freelance Shopware developer**. Feel free to contact me with questions about the plugin or if you need help with your Shopware project. I work on plugin development, integrations, customizations and technical support for Shopware stores.
 
-**Kontakt:** [gh-plugins@stefanpilz.ltd](mailto:gh-plugins@stefanpilz.ltd) · **Website:** [stefanpilz.ltd](https://stefanpilz.ltd)
-
-## English summary
-
-StPiGhBestPriceIntegration is an **open-source Shopware 6 integration for BestPrice.gr**, providing XML product feeds, merchant CSV export, product selection, field mapping, local feed validation and scheduled generation. It includes a native Administration interface in German, English and Greek. BestPrice did not provide a developer test account, so official provider acceptance remains unverified. The MIT-licensed source is available for use, customization, testing and contributions.
+**Contact:** [gh-plugins@stefanpilz.ltd](mailto:gh-plugins@stefanpilz.ltd) · **Website:** [stefanpilz.ltd](https://stefanpilz.ltd)

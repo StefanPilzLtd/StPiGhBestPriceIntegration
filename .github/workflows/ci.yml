@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: shopware/shopware-cli-action@v1
+      - uses: shopware/shopware-cli-action@v3
       - uses: actions/setup-node@v4
         with: {node-version: '24'}
       - run: shopware-cli extension build .

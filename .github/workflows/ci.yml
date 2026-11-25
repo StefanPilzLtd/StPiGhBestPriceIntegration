@@ -13,7 +13,7 @@ jobs:
         php: ['8.4']
         shopware: ['6.7.16.1']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
@@ -40,7 +40,7 @@ jobs:
   assets:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: shopware/shopware-cli-action@v1
       - uses: actions/setup-node@v4
         with: {node-version: '24'}
@@ -53,7 +53,7 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: make setup start install
       - run: make test-integration
       - run: mkdir -p artifacts && docker compose -f dev/compose.yaml logs --no-color > artifacts/compose.log

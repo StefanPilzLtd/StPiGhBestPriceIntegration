@@ -32,7 +32,7 @@ jobs:
       - run: php tests/performance.php > artifacts/performance.json
       - run: python3 scripts/secret_scan.py
       - run: python3 scripts/sbom.py
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: quality-php-${{ matrix.php }}
@@ -48,7 +48,7 @@ jobs:
       - run: python3 scripts/clean_build_outputs.py
       - run: shopware-cli extension validate .
       - run: make package
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: {name: candidate-archive, path: artifacts/*.zip}
   integration:
     runs-on: ubuntu-latest
@@ -58,6 +58,6 @@ jobs:
       - run: make test-integration
       - run: mkdir -p artifacts && docker compose -f dev/compose.yaml logs --no-color > artifacts/compose.log
         if: always()
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with: {name: integration-logs, path: artifacts/}

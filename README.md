@@ -31,6 +31,15 @@ BestPrice 360, consent and conversion processing, historical analytics and autom
 
 I could not fully test the plugin because BestPrice did not provide me with a test account. I originally planned to publish it in the Shopware Store. Without the access needed to complete those tests, I am making the code publicly available on GitHub instead.
 
+In a follow-up response, BestPrice clarified that it does not offer the following to third-party developers of external plugins:
+
+- A third-party developer program.
+- Sandbox environments or API access.
+- Branding rights.
+- Commercial data or competitor-analysis rights.
+
+According to that response, BestPrice's technical documentation and tools are reserved for active, registered merchants on its platform. This is therefore an **independent community project without official BestPrice support, endorsement or certification**. No BestPrice branding or commercial-data rights have been granted to this project. The MIT license covers this project's source code and does not grant access to BestPrice services or rights to its branding or data.
+
 Local checks include 56 passing unit tests, plus installation, activation, reinstallation and uninstallation of the release ZIP in an isolated test shop. These checks do not establish official BestPrice feed acceptance or Shopware Store approval. See the [v0.9 verification record](docs/verification-v0.9.json).
 
 ## Requirements
